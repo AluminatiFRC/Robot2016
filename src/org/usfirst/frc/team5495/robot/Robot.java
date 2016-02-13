@@ -2,20 +2,26 @@
 package org.usfirst.frc.team5495.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.util.UUID;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.usfirst.frc.team5495.robot.commands.ExampleCommand;
 import org.usfirst.frc.team5495.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,8 +35,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	private RobotDrive drive;
 	private CameraServer cameraServer;
-	private MqttClient mqtt;
+	private MessageClient mqtt;
 	private Joystick joystick;
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
@@ -38,31 +45,26 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 	SendableChooser chooser;
-
+	private int heading;
+	private double distance;
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
 		oi = new OI();
+		
+		drive = new RobotDrive(0,1,2,3);
+		
 		chooser = new SendableChooser();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 
 		joystick = new Joystick(0);
-
-		try {
-			mqtt = new MqttClient("tcp://localhost:5888", UUID.randomUUID().toString().substring(0,20), new MemoryPersistence());
-			MqttConnectOptions connOpts = new MqttConnectOptions();
-			connOpts.setCleanSession(true);
-			mqtt.connect(connOpts);
-			System.out.println("MQTT client connected");
-
-		} catch (MqttException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		client = new MessageClient("localhost:5888");
 	}
 
 	/**
@@ -141,5 +143,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+		float correction = heading / -350.0f;
+		correction = correction * correction * correction;
+		drive.arcadeDrive(distance > 36 ? .3f : 0, correction < .4f ? correction : 0.0f);
 	}
 }
