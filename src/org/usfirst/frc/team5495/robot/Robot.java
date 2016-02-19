@@ -22,8 +22,11 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.usfirst.frc.team5495.robot.commands.ExampleCommand;
-import org.usfirst.frc.team5495.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team5495.MessageClient;
+import org.usfirst.frc.team5495.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team5495.robot.subsystems.Loader;
+import org.usfirst.frc.team5495.robot.subsystems.Shooter;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -35,12 +38,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	private RobotDrive drive;
-	private CameraServer cameraServer;
 	private MessageClient mqtt;
 	private Joystick joystick;
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	public static DriveTrain drive;
+	public static Loader loader;
+	public static Shooter shooter; 
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -48,23 +51,19 @@ public class Robot extends IterativeRobot {
 	private int heading;
 	private double distance;
 	
+	public Robot() {}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		oi = new OI();
+		mqtt = new MessageClient("localhost:5888");
 		
-		drive = new RobotDrive(0,1,2,3);
-		
-		chooser = new SendableChooser();
-		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
-
-		joystick = new Joystick(0);
-		
-		client = new MessageClient("localhost:5888");
+		drive = new DriveTrain();
+		shooter = new Shooter();
+		loader = new Loader();
+		oi = new OI();		
 	}
 
 	/**
@@ -127,15 +126,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		double yAxis = joystick.getRawAxis(1);
-		String value = Double.toString(yAxis);
-		System.out.println(value);
-		MqttMessage message = new MqttMessage(value.getBytes());
-		try {
-			mqtt.publish("Testing", message);
-		} catch (MqttException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -145,6 +135,5 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 		float correction = heading / -350.0f;
 		correction = correction * correction * correction;
-		drive.arcadeDrive(distance > 36 ? .3f : 0, correction < .4f ? correction : 0.0f);
 	}
 }

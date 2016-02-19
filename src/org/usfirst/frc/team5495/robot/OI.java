@@ -1,7 +1,11 @@
 package org.usfirst.frc.team5495.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
-import org.usfirst.frc.team5495.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
+import org.usfirst.frc.team5495.robot.commands.TeleOpLoaderCommand;
+import org.usfirst.frc.team5495.robot.commands.TeleopShooterCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -34,5 +38,12 @@ public class OI {
     // Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
+	public Joystick stick = new Joystick(0);
+	public OI() {
+		Button a = new JoystickButton(stick, 1);
+		a.whileHeld(new TeleopShooterCommand());
+		Button b = new JoystickButton(stick, 2);
+		b.whileHeld(new TeleOpLoaderCommand());
+	}
 }
 
