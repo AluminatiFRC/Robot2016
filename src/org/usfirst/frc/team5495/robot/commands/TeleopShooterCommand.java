@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TeleopShooterCommand extends Command {
+public class TeleOpShooterCommand extends Command {
 
-    public TeleopShooterCommand() {
+    public TeleOpShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.shooter);

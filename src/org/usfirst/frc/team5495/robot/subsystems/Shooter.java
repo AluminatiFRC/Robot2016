@@ -27,6 +27,12 @@ public class Shooter extends Subsystem {
 		System.out.println("Spinnnning");
 	}
 	
+	public void spinBack() {
+		motorR.set(-1);
+		motorL.set(1);
+		System.out.println("Spinnnningback");
+	}
+	
 	//METHOD
 	public void spinDown() {
 		motorR.set(0);

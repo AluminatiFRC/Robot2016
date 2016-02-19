@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain drive;
 	public static Loader loader;
 	public static Shooter shooter; 
-	public static OI oi;
+	public static OperatorInterface oi;
 
 	Command autonomousCommand;
 	SendableChooser chooser;
@@ -63,7 +63,7 @@ public class Robot extends IterativeRobot {
 		drive = new DriveTrain();
 		shooter = new Shooter();
 		loader = new Loader();
-		oi = new OI();		
+		oi = new OperatorInterface();		
 	}
 
 	/**
