@@ -22,7 +22,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.usfirst.frc.team5495.MessageClient;
+import org.usfirst.frc.team5495.PollingMessageClient;
 import org.usfirst.frc.team5495.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5495.robot.subsystems.Loader;
 import org.usfirst.frc.team5495.robot.subsystems.Shooter;
@@ -38,7 +38,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	private MessageClient mqtt;
+	public static PollingMessageClient messageClient;
 	private Joystick joystick;
 
 	public static DriveTrain drive;
@@ -58,11 +58,13 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		mqtt = new MessageClient("localhost:5888");
+		messageClient = new PollingMessageClient("tcp://localhost:5888", "5495.targetting");
+		messageClient.connect();
 		
 		drive = new DriveTrain();
 		shooter = new Shooter();
 		loader = new Loader();
+		
 		oi = new OperatorInterface();		
 	}
 

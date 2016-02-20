@@ -1,10 +1,6 @@
 package org.usfirst.frc.team5495;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-import javax.swing.Action;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -13,27 +9,36 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * If there is no connection, messages are ignored. Does not work with wildcard topics yet.
  * @author shsrobotics
  *
  */
-public class MessageClient implements MqttCallback{
+public class PollingMessageClient implements MqttCallback{
 	private String brokerAddress;
 	private MqttClient client;
 	private MemoryPersistence persistance; // needed for mqtt
 	private ConnectionState state = ConnectionState.DISCONNECTED;
-	private HashMap<String, Consumer<String>> listeners = new HashMap<>();
+	private HashMap<String, String> messages = new HashMap<>();
 	private String[] subscriptions;
-
+	private JSONParser parser = new JSONParser();
+	
 	enum ConnectionState{
 		DISCONNECTED, CONNECTING, CONNECTED
 	}
 	
-	public MessageClient(String brokerAddress) {
+	public PollingMessageClient(String brokerAddress, String... subs) {
 		persistance = new MemoryPersistence();
 		this.brokerAddress = brokerAddress;
+		this.subscriptions = subs;
+		
+		for (String sub : subscriptions){
+			messages.put(sub, "{}");
+		}
 	}
 
 	public void connect() {
@@ -54,8 +59,9 @@ public class MessageClient implements MqttCallback{
 					client.connect(connOpts);
 					state = ConnectionState.CONNECTED;
 					System.out.println("[MQTT] Connected to client sucsessfully");
+
+					publish("testing", "RoboRIO connected to MQTT");
 					
-					String[] subscrptions = listeners.keySet().stream().toArray(size -> new String[size]);
 					client.subscribe(subscriptions);
 				} catch (MqttException e) {
 					System.err.println("[MQTT] MqttException, error connecting. Trying again");
@@ -95,22 +101,23 @@ public class MessageClient implements MqttCallback{
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		Consumer<String> listener = listeners.get(topic);
-		if (listener == null){
-			System.out.println("Unhandled message. Topic: " + topic + " Message: " + message);
-		} else {
-			listener.accept(new String(message.getPayload()));
-		}
+		System.out.println("MQTT: "+ topic + ":" + message);
+		messages.put(topic, new String(message.getPayload()));
 	}
 	
-	public void addMessageListener(String topic, Consumer<String> listener) {
-		listeners.put(topic, listener);
-		if (state == ConnectionState.CONNECTED){
-			try {
-				client.subscribe(topic);
-			} catch (MqttException e) {
-				e.printStackTrace();
-			}
+	public String getMessage(String topic){
+		return messages.get(topic);
+	}
+	
+	public JSONObject getJsonObject(String topic){
+    	JSONObject obj;
+    	try {
+			obj = (JSONObject) parser.parse(messages.get(topic));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
 		}
+    	
+    	return obj;
 	}
 }

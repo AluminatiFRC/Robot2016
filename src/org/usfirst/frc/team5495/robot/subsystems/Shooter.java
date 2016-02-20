@@ -1,42 +1,54 @@
 package org.usfirst.frc.team5495.robot.subsystems;
 
+import org.usfirst.frc.team5495.MotorFeedback;
+
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *jtdcjkhkhaosuhdfRandomhafhuefuLettersvivhrihohfhcdjyf
+ *
  */
 public class Shooter extends Subsystem {
 	private CANTalon motorR;
 	private CANTalon motorL;
+	private PIDController motorRPID;
+	private PIDController motorLPID;
 	
-	public static final int SHOOTER_PORT_R = 11;
-	public static final int SHOOTER_PORT_L = 12;
+	public static final int SHOOTER_PORT_R = 12;
+	public static final int SHOOTER_PORT_L = 11;
 
 	public Shooter() {
 		 motorR = new CANTalon(SHOOTER_PORT_R);
 		 motorL = new CANTalon(SHOOTER_PORT_L);
+		 motorRPID = new PIDController(.3, 0, 0, new MotorFeedback(motorR), motorR);
+		 motorRPID.enable();
+		 motorLPID = new PIDController(.1, 0, 0, new MotorFeedback(motorL), motorL);
+		 motorLPID.enable();
+		 //motorR.changeControlMode(TalonControlMode.Voltage);
 	}
 	
 	//METHOD
 	public void spinUp() {
-		motorR.set(1);
-		motorL.set(-1);
+		motorRPID.setSetpoint(1);
+		motorLPID.setSetpoint(-1);	
 		System.out.println("Spinnnning");
 	}
 	
 	public void spinBack() {
-		motorR.set(-1);
-		motorL.set(1);
+		motorRPID.setSetpoint(-1);
+		motorLPID.setSetpoint(1);
 		System.out.println("Spinnnningback");
 	}
 	
 	//METHOD
 	public void spinDown() {
-		motorR.set(0);
-		motorL.set(0);
+		motorRPID.setSetpoint(0);
+		motorLPID.setSetpoint(0);
 		System.out.println("Stopppppped");
 	}
 

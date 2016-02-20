@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
+import org.usfirst.frc.team5495.PollingMessageClient;
+import org.usfirst.frc.team5495.robot.commands.AlignToTarget;
 import org.usfirst.frc.team5495.robot.commands.TeleOpLoaderCommand;
 import org.usfirst.frc.team5495.robot.commands.TeleOpShooterCommand;
 
@@ -40,10 +42,14 @@ public class OperatorInterface {
     // button.whenReleased(new ExampleCommand());
 	public Joystick stick = new Joystick(0);
 	public OperatorInterface() {
-		Button a = new JoystickButton(stick, 1);
+		Button a = new JoystickButton(stick, 10);
 		a.whileHeld(new TeleOpShooterCommand());
+		
 		Button b = new JoystickButton(stick, 2);
 		b.whileHeld(new TeleOpLoaderCommand());
+		
+		Button targetAlign = new JoystickButton(stick, 1);
+		targetAlign.whileHeld(new AlignToTarget());
 	}
 }
 

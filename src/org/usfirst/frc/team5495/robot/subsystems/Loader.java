@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5495.robot.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -14,6 +15,8 @@ public class Loader extends Subsystem {
 
     public Loader () {
     	motor = new CANTalon(LOADER_PORT);
+    	motor.setPIDSourceType(PIDSourceType.kRate);
+    	motor.setPID(0.01, 0, 0);
     }
     
     public void initDefaultCommand() {
@@ -22,11 +25,11 @@ public class Loader extends Subsystem {
     }
     
     public void load() {
-    	motor.set(SPEED);
+    	motor.pidWrite(SPEED);
     }
     
     public void unload() {
-    	motor.set(-SPEED);
+    	motor.pidWrite(-SPEED);
     }
     public void stop() {
     	motor.set(0);
