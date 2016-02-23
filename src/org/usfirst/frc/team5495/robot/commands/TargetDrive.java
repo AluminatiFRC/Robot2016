@@ -37,8 +37,8 @@ public class TargetDrive extends Command {
     	
     	//Clamp the move amount so we can't go like a billion miles per hour, man
     	double moveAmount = distanceOffset * .009;
-    	moveAmount = Math.max(moveAmount, -.4);
-    	moveAmount = Math.min(moveAmount, .4);
+    	moveAmount = Math.max(moveAmount, -.2);
+    	moveAmount = Math.min(moveAmount, .2);
     	
     	Robot.messageClient.publish("testing", String.valueOf(moveAmount));
     	

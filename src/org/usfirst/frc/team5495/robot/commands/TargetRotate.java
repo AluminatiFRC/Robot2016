@@ -38,10 +38,10 @@ public class TargetRotate extends Command {
     	offset = (Double) obj.get("horizDelta");
     	
 
-    	double rotation = Math.max(offset, -.4);
-    	rotation = Math.min(rotation, .4);
+    	double rotation = Math.max(offset * .1, -.2);
+    	rotation = Math.min(rotation, .2);
     	
-    	Robot.drive.drive(0, rotation * -0.8);
+    	Robot.drive.drive(0, rotation);
     }
 
     // Make this return true when this Command no longer needs to run execute()

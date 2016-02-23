@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TeleOpShooterCommand extends Command {
-
-    public TeleOpShooterCommand() {
+	private boolean isForward;
+	
+    public TeleOpShooterCommand(boolean isForward) {
+    	this.isForward = isForward;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.shooter);
@@ -21,7 +23,11 @@ public class TeleOpShooterCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooter.spinUp();
+    	if (isForward) {
+    		Robot.shooter.spinForward();
+    	} else {
+    		Robot.shooter.spinBack();
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,7 +37,7 @@ public class TeleOpShooterCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooter.spinDown();
+		Robot.shooter.stop();
     }
 
     // Called when another command which requires one or more of the same

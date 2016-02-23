@@ -19,13 +19,22 @@ public class TeleOpDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double forward = Robot.oi.stick.getRawAxis(1); 
-    	double turn = -Robot.oi.stick.getRawAxis(0);
+    	double forward = Robot.oi.driver.getRawAxis(1); 
+    	double turn = -Robot.oi.driver.getRawAxis(0);
+    	
+    	forward = deadzone(forward, .2);
+    	turn = deadzone(turn, .2);
     	
     	Robot.drive.drive(forward, turn);
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    private double deadzone(double val, double zone) {
+		if (Math.abs(val) < zone)
+			return 0;
+		return val;
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return false;
     }

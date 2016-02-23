@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TeleOpLoaderCommand extends Command {
-
-    public TeleOpLoaderCommand() {
+	private boolean isForward;
+	
+    public TeleOpLoaderCommand(boolean isForward) {
+    	this.isForward = isForward;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.loader);
@@ -21,7 +23,11 @@ public class TeleOpLoaderCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.loader.load();
+    	if (isForward) {
+    		Robot.loader.load();
+    	} else {
+    		Robot.loader.unload();
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -40,16 +40,23 @@ public class OperatorInterface {
     // Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
-	public Joystick stick = new Joystick(0);
+	public Joystick driver = new Joystick(0);
+	public Joystick operator = new Joystick(1);
+	
 	public OperatorInterface() {
-		Button a = new JoystickButton(stick, 10);
-		a.whileHeld(new TeleOpShooterCommand());
+		Button a = new JoystickButton(operator, 2); // Button B
+		a.whileHeld(new TeleOpShooterCommand(true));
 		
-		Button b = new JoystickButton(stick, 2);
-		b.whileHeld(new TeleOpLoaderCommand());
+		Button b = new JoystickButton(operator, 1); // Button A
+		b.whileHeld(new TeleOpLoaderCommand(true));
+
+		Button c = new JoystickButton(operator, 3); // Button X
+		a.whileHeld(new TeleOpShooterCommand(false));
 		
-		Button targetAlign = new JoystickButton(stick, 1);
+		Button d = new JoystickButton(operator, 4); // Button Y
+		b.whileHeld(new TeleOpLoaderCommand(false));
+		
+		Button targetAlign = new JoystickButton(driver, 1);
 		targetAlign.whileHeld(new AlignToTarget());
 	}
 }
-
