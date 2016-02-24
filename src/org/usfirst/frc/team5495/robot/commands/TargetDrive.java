@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TargetDrive extends Command {
-    private static final double TARGET_DISTANCE = 140.0;
-	private static final double TOLERANCE_IN = 4;
-	private Double distanceOffset;
+    private static final double DISTANCE_MIN= 170;
+    private static final double DISTANCE_MAX = 190;
+	private static final double TOLERANCE = 10;
+	private Double distance;
 
 	public TargetDrive() {
         requires(Robot.drive);
@@ -33,21 +34,30 @@ public class TargetDrive extends Command {
     		return;
     	}
 
-    	distanceOffset = ((Double) obj.get("targetDistance")) - TARGET_DISTANCE;
+    	distance = ((Double) obj.get("targetDistance"));
+    	
+    	double movement = 0;
+    	
+    	if (distance > DISTANCE_MAX){
+    		movement = 1.0;
+    	} else if (distance < DISTANCE_MIN) {
+    		movement = -1.0;
+    	}
     	
     	//Clamp the move amount so we can't go like a billion miles per hour, man
-    	double moveAmount = distanceOffset * .009;
-    	moveAmount = Math.max(moveAmount, -.2);
-    	moveAmount = Math.min(moveAmount, .2);
+    	double moveAmount = movement * .4;
+    	moveAmount = Math.max(moveAmount, -.4);
+    	moveAmount = Math.min(moveAmount, .4);
     	
-    	Robot.messageClient.publish("testing", String.valueOf(moveAmount));
+    	Robot.messageClient.publish("test", "drive: " + String.valueOf(moveAmount));
     	
     	Robot.drive.drive(-moveAmount, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(distanceOffset) < TOLERANCE_IN;
+        return (distance <= DISTANCE_MAX) &&
+        		(distance >= DISTANCE_MIN);
     }
 
     // Called once after isFinished returns true

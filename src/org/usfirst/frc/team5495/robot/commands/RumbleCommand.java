@@ -2,35 +2,37 @@ package org.usfirst.frc.team5495.robot.commands;
 
 import org.usfirst.frc.team5495.robot.Robot;
 
+import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class LifterControl extends Command {
+public class RumbleCommand extends Command {
 
-    public LifterControl() {
-    	requires(Robot.lifter);
+    public RumbleCommand() {
+    	setTimeout(.3);
     }
-
+    
     // Called just before this Command runs the first time
     protected void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double motion = Robot.oi.operator.getRawAxis(1);
-    	motion = Math.pow(motion,  3);
-    	Robot.lifter.adjustPosition(motion * 20);
+    	Robot.oi.operator.setRumble(RumbleType.kLeftRumble, (float) .5);
+    	Robot.oi.operator.setRumble(RumbleType.kRightRumble, (float) .5);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.oi.operator.setRumble(RumbleType.kLeftRumble, (float) 0);
+    	Robot.oi.operator.setRumble(RumbleType.kRightRumble, (float) 0);
     }
 
     // Called when another command which requires one or more of the same

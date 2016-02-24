@@ -11,7 +11,9 @@ public class AlignToTarget extends CommandGroup {
 	
     
     public AlignToTarget() {
-    	//addSequential(new TargetRotate(client));
+    	addSequential(new TargetRotate());
     	addSequential(new TargetDrive());
+    	addSequential(new TargetRotate());
+    	addSequential(new RumbleCommand());
     }
 }

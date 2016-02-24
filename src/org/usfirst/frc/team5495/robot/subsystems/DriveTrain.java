@@ -126,7 +126,7 @@ public class DriveTrain extends Subsystem {
 //		Robot.messageClient.publish("test", "right encoder:" + rightEncoder.getRate());
 //		Robot.messageClient.publish("test", "error:" + leftPID.getError() + " avg: " + leftPID.getAvgError());
 //		
-//		leftPID.setSetpoint(leftMotorSpeed* 120);
+//		leftPID.setSetpoint(leftMotorSpeed * 120);
 //		.setSetpoint(rightMotorSpeed);
 //	}
 }
