@@ -24,6 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.usfirst.frc.team5495.PollingMessageClient;
 import org.usfirst.frc.team5495.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team5495.robot.subsystems.Lifter;
 import org.usfirst.frc.team5495.robot.subsystems.Loader;
 import org.usfirst.frc.team5495.robot.subsystems.Shooter;
 
@@ -45,6 +46,7 @@ public class Robot extends IterativeRobot {
 	public static Loader loader;
 	public static Shooter shooter; 
 	public static OperatorInterface oi;
+	public static Lifter lifter;
 
 	Command autonomousCommand;
 	SendableChooser chooser;
@@ -64,6 +66,7 @@ public class Robot extends IterativeRobot {
 		drive = new DriveTrain();
 		shooter = new Shooter();
 		loader = new Loader();
+		lifter = new Lifter();
 		
 		oi = new OperatorInterface();		
 	}

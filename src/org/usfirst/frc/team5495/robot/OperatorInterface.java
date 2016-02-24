@@ -1,11 +1,16 @@
 package org.usfirst.frc.team5495.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick.ButtonType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team5495.PollingMessageClient;
 import org.usfirst.frc.team5495.robot.commands.AlignToTarget;
+import org.usfirst.frc.team5495.robot.commands.AutomaticLoad;
+import org.usfirst.frc.team5495.robot.commands.CancelCommand;
+import org.usfirst.frc.team5495.robot.commands.CrawlMode;
 import org.usfirst.frc.team5495.robot.commands.TeleOpLoaderCommand;
 import org.usfirst.frc.team5495.robot.commands.TeleOpShooterCommand;
 
@@ -37,26 +42,43 @@ public class OperatorInterface {
     // the button is released.
     // button.whileHeld(new ExampleCommand());
     
-    // Start the command when the button is released  and let it run the command
+    public static final int LOADER_STOP = 1;
+	// Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
-	public Joystick driver = new Joystick(0);
-	public Joystick operator = new Joystick(1);
+	public Joystick driver;
+	public Joystick operator;
 	
 	public OperatorInterface() {
-		Button a = new JoystickButton(operator, 2); // Button B
-		a.whileHeld(new TeleOpShooterCommand(true));
+		driver = new Joystick(0);
+		operator = new Joystick(1);
 		
-		Button b = new JoystickButton(operator, 1); // Button A
-		b.whileHeld(new TeleOpLoaderCommand(true));
+		Button shooter = new JoystickButton(operator, 2); // Button B
+		shooter.whileHeld(new TeleOpShooterCommand(true));
+		
+		Command loaderStartCommand = new AutomaticLoad();
+		Button loader = new JoystickButton(operator, 1); // Button A
+		loader.whenPressed(loaderStartCommand);
+		loader.whenReleased(new CancelCommand(loaderStartCommand));
+		
+		Button loadManual = new JoystickButton(operator, 5); //Left Bumper
+		loadManual.whileHeld(new TeleOpLoaderCommand(true));
 
-		Button c = new JoystickButton(operator, 3); // Button X
-		a.whileHeld(new TeleOpShooterCommand(false));
+		Button stopShooter = new JoystickButton(operator, 4); // Button X
+		stopShooter.whileHeld(new TeleOpShooterCommand(false));
 		
-		Button d = new JoystickButton(operator, 4); // Button Y
-		b.whileHeld(new TeleOpLoaderCommand(false));
+		Button operatorY = new JoystickButton(operator, 3); // Button Y
+		operatorY.whileHeld(new TeleOpLoaderCommand(false));
 		
-		Button targetAlign = new JoystickButton(driver, 1);
-		targetAlign.whileHeld(new AlignToTarget());
+		AlignToTarget alignCommand = new AlignToTarget();
+		Button targetAlignEnable = new JoystickButton(driver, 7);
+		targetAlignEnable.whenPressed(alignCommand);
+		Button targetAlignDisable = new JoystickButton(driver, 8);
+		targetAlignDisable.cancelWhenPressed(alignCommand);
+		
+		Button crawlEnable = new JoystickButton(driver, 2);
+		crawlEnable.whenPressed(new CrawlMode(true));
+		Button crawlDisable = new JoystickButton(driver, 11);
+		crawlDisable.whenPressed(new CrawlMode(false));		
 	}
 }

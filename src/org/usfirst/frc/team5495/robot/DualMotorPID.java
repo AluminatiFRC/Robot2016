@@ -16,7 +16,6 @@ public class DualMotorPID implements PIDOutput{
 		
 	@Override
 	public void pidWrite(double output) {
-		Robot.messageClient.publish("test", "output: " + output + "integration: " + integration);
 		integration += output;
 		motorA.set(integration/240);
 		motorB.set(integration/240);

@@ -2,13 +2,15 @@ package org.usfirst.frc.team5495.robot.commands;
 
 import org.usfirst.frc.team5495.robot.Robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class TeleOpDrive extends Command {
-
+	double TWISTFACTOR = 0.4;
+	
     public TeleOpDrive() {
     	requires(Robot.drive);
     }
@@ -19,11 +21,12 @@ public class TeleOpDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double forward = Robot.oi.driver.getRawAxis(1); 
-    	double turn = -Robot.oi.driver.getRawAxis(0);
+    	double forward = Robot.oi.driver.getAxis(Joystick.AxisType.kY); 
+    	double turn = -Robot.oi.driver.getAxis(Joystick.AxisType.kX);
+    	double twist = -Robot.oi.driver.getAxis(Joystick.AxisType.kTwist);
     	
     	forward = deadzone(forward, .2);
-    	turn = deadzone(turn, .2);
+    	turn = deadzone(turn + twist * TWISTFACTOR, .2);
     	
     	Robot.drive.drive(forward, turn);
     }

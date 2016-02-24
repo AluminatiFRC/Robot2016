@@ -24,10 +24,13 @@ public class DriveTrain extends Subsystem {
 	private PIDController leftPID;
 	private PIDController rightPID;
 
+	private double crawlScaling = 0.4;
 	private static final int DRIVE_PORT_FRONT_LEFT = 0;
 	private static final int DRIVE_PORT_REAR_LEFT = 1;
 	private static final int DRIVE_PORT_FRONT_RIGHT = 2;
 	private static final int DRIVE_PORT_REAR_RIGHT = 3;
+	
+	private boolean isCrawlEnabled = false;
 
 	public DriveTrain() {
 		VictorSP frontLeft = new VictorSP(DRIVE_PORT_FRONT_LEFT);
@@ -86,7 +89,15 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void drive(double moveValue, double rotateValue) {
+		if (isCrawlEnabled) {
+			moveValue *= crawlScaling;
+			rotateValue *= crawlScaling;
+		}
 		drive.arcadeDrive(moveValue, rotateValue);
+	}
+	
+	public void setCrawlEnabled(boolean crawl) {
+		isCrawlEnabled = crawl;
 	}
 	
 //	public void drive(double moveValue, double rotateValue) {
