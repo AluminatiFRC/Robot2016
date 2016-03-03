@@ -23,6 +23,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.usfirst.frc.team5495.PollingMessageClient;
+import org.usfirst.frc.team5495.robot.commands.AutonomousModeCommandGroup;
+import org.usfirst.frc.team5495.robot.commands.MoveForward;
 import org.usfirst.frc.team5495.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5495.robot.subsystems.Lifter;
 import org.usfirst.frc.team5495.robot.subsystems.Loader;
@@ -96,18 +98,8 @@ public class Robot extends IterativeRobot {
 	 * to the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
-		autonomousCommand = (Command) chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+		Command autonomousCommand = new AutonomousModeCommandGroup();
+		autonomousCommand.start();
 	}
 
 	/**

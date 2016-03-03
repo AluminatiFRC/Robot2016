@@ -11,12 +11,9 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TargetRotate extends Command {
-	private JSONParser parser;
 	private double offset;
 
 	public TargetRotate() {
-    	parser = new JSONParser();
-
     	requires(Robot.drive);
     }
 
@@ -33,8 +30,7 @@ public class TargetRotate extends Command {
     		Robot.drive.drive(0, 0);
     		return;
     	}
-    	
-    	
+    
     	double distance = (Double) obj.get("targetDistance");
     	//Values sampled
     	double horizError = (distance * .001406397) - .3897812794; 

@@ -1,20 +1,24 @@
 package org.usfirst.frc.team5495.robot.commands;
 
 import org.usfirst.frc.team5495.robot.Robot;
-import org.usfirst.frc.team5495.robot.subsystems.Shooter;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * load and unloads the ball. takes a boolean when called, where true loads the
+ * ball and false unloads the ball. 
+ * only ends when you call interrupted.
+ * stops loader when command ends.
+ * it requires the loader subsystem
  */
-public class TeleOpShooterCommand extends Command {
+public class LoaderCommand extends Command {
 	private boolean isForward;
 	
-    public TeleOpShooterCommand(boolean isForward) {
+    public LoaderCommand(boolean isForward) {
     	this.isForward = isForward;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	requires(Robot.loader);
     }
 
     // Called just before this Command runs the first time
@@ -24,9 +28,9 @@ public class TeleOpShooterCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if (isForward) {
-    		Robot.shooter.spinForward();
+    		Robot.loader.load();
     	} else {
-    		Robot.shooter.spinBack();
+    		Robot.loader.unload();
     	}
     }
 
@@ -37,7 +41,7 @@ public class TeleOpShooterCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-		Robot.shooter.stop();
+    	Robot.loader.stop();
     }
 
     // Called when another command which requires one or more of the same

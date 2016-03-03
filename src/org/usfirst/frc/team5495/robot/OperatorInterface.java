@@ -11,8 +11,8 @@ import org.usfirst.frc.team5495.robot.commands.AlignToTarget;
 import org.usfirst.frc.team5495.robot.commands.AutomaticLoad;
 import org.usfirst.frc.team5495.robot.commands.CancelCommand;
 import org.usfirst.frc.team5495.robot.commands.CrawlMode;
-import org.usfirst.frc.team5495.robot.commands.TeleOpLoaderCommand;
-import org.usfirst.frc.team5495.robot.commands.TeleOpShooterCommand;
+import org.usfirst.frc.team5495.robot.commands.LoaderCommand;
+import org.usfirst.frc.team5495.robot.commands.ShooterCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -54,7 +54,7 @@ public class OperatorInterface {
 		operator = new Joystick(1);
 		
 		Button shooter = new JoystickButton(operator, 2); // Button B
-		shooter.whileHeld(new TeleOpShooterCommand(true));
+		shooter.whileHeld(new ShooterCommand(true));
 		
 		Command loaderStartCommand = new AutomaticLoad();
 		Button loader = new JoystickButton(operator, 1); // Button A
@@ -62,13 +62,13 @@ public class OperatorInterface {
 		loader.whenReleased(new CancelCommand(loaderStartCommand));
 		
 		Button loadManual = new JoystickButton(operator, 5); //Left Bumper
-		loadManual.whileHeld(new TeleOpLoaderCommand(true));
+		loadManual.whileHeld(new LoaderCommand(true));
 
 		Button stopShooter = new JoystickButton(operator, 4); // Button X
-		stopShooter.whileHeld(new TeleOpShooterCommand(false));
+		stopShooter.whileHeld(new ShooterCommand(false));
 		
 		Button operatorY = new JoystickButton(operator, 3); // Button Y
-		operatorY.whileHeld(new TeleOpLoaderCommand(false));
+		operatorY.whileHeld(new LoaderCommand(false));
 		
 		AlignToTarget alignCommand = new AlignToTarget();
 		Button targetAlignEnable = new JoystickButton(driver, 7);
