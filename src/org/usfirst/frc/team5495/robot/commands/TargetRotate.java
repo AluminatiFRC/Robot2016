@@ -23,7 +23,7 @@ public class TargetRotate extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	JSONObject obj = Robot.messageClient.getJsonObject("5495.targetting");
+    	JSONObject obj = Robot.messageClient.getJsonObject("robot/vision/telemetry");
     	
     	boolean hasTarget = (Boolean)obj.get("hasTarget");
     	if (!hasTarget){
@@ -32,7 +32,7 @@ public class TargetRotate extends Command {
     	}
     
     	double distance = (Double) obj.get("targetDistance");
-    	//Values sampled
+    	//Values sampled physically
     	double horizError = (distance * .001406397) - .3897812794; 
     	offset = (Double) obj.get("horizDelta") - horizError;
     	
@@ -47,7 +47,7 @@ public class TargetRotate extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(offset) < .02;
+        return Math.abs(offset) < Robot.messageClient.getProperty("target/rotation/tolerance");
     }
 
     // Called once after isFinished returns true

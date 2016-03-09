@@ -24,7 +24,6 @@ public class DriveTrain extends Subsystem {
 	private PIDController leftPID;
 	private PIDController rightPID;
 
-	private double crawlScaling = 0.4;
 	private static final int DRIVE_PORT_FRONT_LEFT = 0;
 	private static final int DRIVE_PORT_REAR_LEFT = 1;
 	private static final int DRIVE_PORT_FRONT_RIGHT = 2;
@@ -90,6 +89,7 @@ public class DriveTrain extends Subsystem {
 
 	public void drive(double moveValue, double rotateValue) {
 		if (isCrawlEnabled) {
+			double crawlScaling = Robot.messageClient.getProperty("drive/crawl/speed");
 			moveValue *= crawlScaling;
 			rotateValue *= crawlScaling;
 		}

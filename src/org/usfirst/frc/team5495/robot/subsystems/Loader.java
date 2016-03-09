@@ -20,7 +20,7 @@ public class Loader extends Subsystem {
     public Loader () {
     	motor = new CANTalon(LOADER_PORT);
     	motor.setPIDSourceType(PIDSourceType.kRate);
-    	motor.setPID(0.01, 0, 0);
+    	motor.setPID(0.1, 0, 0);
     	ballSensor = new AnalogInput(SENSOR_PORT);
     }
     

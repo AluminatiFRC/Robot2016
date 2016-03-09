@@ -24,7 +24,7 @@ public class MoveForward extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drive.drive(.2, 0);
+    	Robot.drive.drive(Robot.messageClient.getProperty("drive/move-forward/speed"), 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()

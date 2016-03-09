@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TargetDrive extends Command {
-    private static final double DISTANCE_MIN= 170;
-    private static final double DISTANCE_MAX = 190;
 	private static final double TOLERANCE = 10;
 	private Double distance;
 
@@ -26,7 +24,7 @@ public class TargetDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	JSONObject obj = Robot.messageClient.getJsonObject("5495.targetting");
+    	JSONObject obj = Robot.messageClient.getJsonObject("robot/vision/telemetry");
 
     	boolean hasTarget = (Boolean)obj.get("hasTarget");
     	if (!hasTarget){
@@ -38,9 +36,9 @@ public class TargetDrive extends Command {
     	
     	double movement = 0;
     	
-    	if (distance > DISTANCE_MAX){
+    	if (distance > Robot.messageClient.getProperty("target/distance/max")){
     		movement = 1.0;
-    	} else if (distance < DISTANCE_MIN) {
+    	} else if (distance < Robot.messageClient.getProperty("target/distance/min")) {
     		movement = -1.0;
     	}
     	
@@ -56,8 +54,8 @@ public class TargetDrive extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (distance <= DISTANCE_MAX) &&
-        		(distance >= DISTANCE_MIN);
+        return (distance <= Robot.messageClient.getProperty("target/distance/max")) &&
+        		(distance >= Robot.messageClient.getProperty("target/distance/min"));
     }
 
     // Called once after isFinished returns true

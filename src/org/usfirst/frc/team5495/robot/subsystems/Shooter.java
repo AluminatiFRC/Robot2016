@@ -36,20 +36,17 @@ public class Shooter extends Subsystem {
 	public void spinForward() {
 		motorRPID.setSetpoint(-1);
 		motorLPID.setSetpoint(1);	
-		System.out.println("Spinnnning");
 	}
 	
 	public void spinBack() {
 		motorRPID.setSetpoint(1);
 		motorLPID.setSetpoint(-1);
-		System.out.println("Spinnnningback");
 	}
 	
 	//METHOD
 	public void stop() {
 		motorRPID.setSetpoint(0);
 		motorLPID.setSetpoint(0);
-		System.out.println("Stopppppped");
 	}
 
 	public void initDefaultCommand() {
