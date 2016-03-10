@@ -9,12 +9,14 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class MoveForward extends Command {
 	public double distanceInches;
-
-    public MoveForward(double distanceInches) {
+	private double turnAmount;
+	
+    public MoveForward(double distanceInches, double turnAmount) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
     	this.distanceInches = distanceInches;
+    	this.turnAmount = turnAmount;
     }
 
     // Called just before this Command runs the first time
@@ -24,13 +26,15 @@ public class MoveForward extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drive.drive(.2, 0);
+    	System.out.println("Moving forward...");
+    	Robot.drive.drive(-.65, turnAmount);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if ((Robot.drive.rightDistance() >= distanceInches)&&
-        		(Robot.drive.leftDistance() >= distanceInches)) {
+    	System.out.println("" + Robot.drive.rightDistance());
+        if ((Robot.drive.rightDistance() <= -distanceInches)&&
+        		(Robot.drive.leftDistance() <= -distanceInches)) {
         	return true;
         } else {
         	return false;
