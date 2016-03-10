@@ -1,12 +1,10 @@
 package org.usfirst.frc.team5495.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Joystick.ButtonType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team5495.PollingMessageClient;
 import org.usfirst.frc.team5495.robot.commands.AlignToTarget;
 import org.usfirst.frc.team5495.robot.commands.AutomaticLoad;
 import org.usfirst.frc.team5495.robot.commands.CancelCommand;
