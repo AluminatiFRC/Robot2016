@@ -22,7 +22,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.usfirst.frc.team5495.PollingMessageClient;
+import org.usfirst.frc.team5495.MessageClient;
 import org.usfirst.frc.team5495.robot.commands.AutonomousModeCommandGroup;
 import org.usfirst.frc.team5495.robot.commands.MoveForward;
 import org.usfirst.frc.team5495.robot.subsystems.DriveTrain;
@@ -41,7 +41,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	public static PollingMessageClient messageClient;
+	public static MessageClient messageClient;
 	private Joystick joystick;
 
 	public static DriveTrain drive;
@@ -62,7 +62,7 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		messageClient = new PollingMessageClient("tcp://localhost:5888", "5495.targetting");
+		messageClient = new PollingMessageClient("tcp://localhost:5888", "robot/vision/telemetry");
 		messageClient.connect();
 		
 		drive = new DriveTrain();
@@ -130,7 +130,5 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
-		float correction = heading / -350.0f;
-		correction = correction * correction * correction;
 	}
 }
