@@ -62,7 +62,7 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		messageClient = new MessageClient("tcp://localhost:5888", "robot/vision/telemetry");
+		messageClient = new MessageClient("tcp://drivercam.lan:5888", "robot/vision/telemetry");
 		messageClient.connect();
 		
 		drive = new DriveTrain();
