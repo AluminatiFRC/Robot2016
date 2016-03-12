@@ -7,10 +7,20 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class LifterControl extends Command {
-
-    public LifterControl() {
+public class LifterMove extends Command {
+	private static final double SPEED = 1.0;
+	private boolean up;
+	/**
+	 * 
+	 * @param direction
+	 * @param time in seconds
+	 */
+    public LifterMove(boolean up, double time) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     	requires(Robot.lifter);
+    	this.setTimeout(time);
+    	this.up = up;
     }
 
     // Called just before this Command runs the first time
@@ -19,10 +29,11 @@ public class LifterControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double motion = Robot.oi.operator.getRawAxis(1);
-    	motion = Math.pow(motion,  3);
-//    	Robot.lifter.adjustPosition(motion * 20);
-    	Robot.lifter.adjust(motion);
+    	if (up){
+    		Robot.lifter.adjust(SPEED);
+    	} else {
+    		Robot.lifter.adjust(-SPEED);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

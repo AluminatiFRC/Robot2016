@@ -32,32 +32,39 @@ public class Lifter extends Subsystem {
     	motorPID = new PIDController(.8, 0, 0, pot, motor);
     	motorPID.setOutputRange(-1, 1);
     	motorPID.setInputRange(MIN_POT_VALUE,  MAX_POT_VALUE);
-    	motorPID.enable();
+//    	motorPID.enable(); //Direct driving it now
     }
     
     public void initDefaultCommand() {
     	setDefaultCommand(new LifterControl());       
     }
     
-    public void setPosition(double angle) {
-//    	Robot.messageClient.publish("robot/lifter/pot/value", String.valueOf(pot.get()));
-//    	Robot.messageClient.publish("robot/lifter/pot/targetvalue", String.valueOf(motorPID.getSetpoint()));
-//    	Robot.messageClient.publish("robot/lifter/motor/targetangle", String.valueOf(targetAngle));
-//    	Robot.messageClient.publish("robot/lifter/motor/output", String.valueOf(motorPID.get()));
-    	
-    	targetAngle = angle;
-    	
-    	targetAngle = Math.max(MIN_ANGLE, targetAngle);
-    	targetAngle = Math.min(targetAngle, MAX_ANGLE);
-    	
-    	motorPID.setSetpoint(angleToPot(targetAngle));
-    }
+//    public void setPosition(double angle) {
+////    	Robot.messageClient.publish("robot/lifter/pot/value", String.valueOf(pot.get()));
+////    	Robot.messageClient.publish("robot/lifter/pot/targetvalue", String.valueOf(motorPID.getSetpoint()));
+////    	Robot.messageClient.publish("robot/lifter/motor/targetangle", String.valueOf(targetAngle));
+////    	Robot.messageClient.publish("robot/lifter/motor/output", String.valueOf(motorPID.get()));
+//    	
+//    	targetAngle = angle;
+//    	
+//    	targetAngle = Math.max(MIN_ANGLE, targetAngle);
+//    	targetAngle = Math.min(targetAngle, MAX_ANGLE);
+//    	
+//    	motorPID.setSetpoint(angleToPot(targetAngle));
+//    }
+//
+//    public void adjustPosition(double angleDelta) {
+//    	setPosition(targetAngle + angleDelta);
+//    }
 
-    public void adjustPosition(double angleDelta) {
-    	setPosition(targetAngle + angleDelta);
+    /**
+     * @param motion Up should be positive
+     */
+    public void adjust(double motion){
+    	motor.set(motion);
     }
     
-    public double angleToPot(double value){
+    private double angleToPot(double value){
     	//Normalize angle
     	value -= MIN_ANGLE;
     	value /= MAX_ANGLE - MIN_ANGLE;
