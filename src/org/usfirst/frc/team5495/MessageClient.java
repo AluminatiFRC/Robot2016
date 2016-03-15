@@ -122,6 +122,7 @@ public class MessageClient implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
+//		System.out.println("topic: " + topic + " msg: " + message);
 		String messageString = new String(message.getPayload());
 		
 		Consumer<String> listener = listeners.get(topic);
@@ -161,8 +162,8 @@ public class MessageClient implements MqttCallback {
 		return messageBuffer.get(topic);
 	}
 	
-	public double getProperty(String name){
-		return properties.get(name);
+	public double getProperty(String name, double defaultValue){
+		return properties.containsKey(name) ? properties.get(name) : defaultValue;
 	}
 	
 	public JSONObject getJsonObject(String topic){

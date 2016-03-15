@@ -21,7 +21,7 @@ public class RotateUntilTarget extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drive.drive(0, -Robot.messageClient.getProperty("target/rotation/speed"));
+		Robot.drive.drive(0, -Robot.messageClient.getProperty("target/rotation/speed", .4));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

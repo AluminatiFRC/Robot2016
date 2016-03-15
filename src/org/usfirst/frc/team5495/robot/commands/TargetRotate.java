@@ -23,29 +23,37 @@ public class TargetRotate extends Command {
     protected void execute() {
     	JSONObject obj = Robot.messageClient.getJsonObject("robot/vision/telemetry");
     	
-    	boolean hasTarget = (Boolean)obj.get("hasTarget");
+    	boolean hasTarget = (Boolean)obj.getOrDefault("hasTarget",false);
     	if (!hasTarget){
     		Robot.drive.drive(0, 0);
     		return;
     	}
     
     	double distance = (Double) obj.get("targetDistance");
+    	
+    	if (distance > 9999){
+    		Robot.drive.drive(0, 0);
+    		System.out.println("Insanely huge distance");
+    		return;
+    	}
+    	
     	//Values sampled physically
     	double horizError = (distance * .001406397) - .3897812794; 
-    	offset = (Double) obj.get("horizDelta") - horizError;
+//    	double offsetCorrection = .045;
+    	double offsetCorrection = 0;
+    	offset = (Double) obj.get("horizDelta") - horizError + offsetCorrection;
     	
     	//Clamp
-    	double rotation = Math.max(offset * 3.0, -.35);
-    	rotation = Math.min(rotation, .35);
-    	
-    	Robot.messageClient.publish("test", "rotation: " + String.valueOf(rotation));
+    	double rotation = Math.max(offset * 10.0, -.45);
+    	rotation = Math.min(rotation, .45);
     	
     	Robot.drive.drive(0, -rotation);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(offset) < Robot.messageClient.getProperty("target/rotation/tolerance");
+    	System.out.println("TargetRotate offset:" + offset);
+        return Math.abs(offset) < Robot.messageClient.getProperty("target/rotation/tolerance",.032);
     }
 
     // Called once after isFinished returns true

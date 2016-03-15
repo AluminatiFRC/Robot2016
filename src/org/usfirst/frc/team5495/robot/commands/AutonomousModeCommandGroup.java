@@ -27,8 +27,8 @@ public class AutonomousModeCommandGroup extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new LifterMove(false, .5));
-    	addSequential(new MoveForward(40, -.17));
-    	addSequential(new MoveForward(30, -.35));
+    	addSequential(new MoveForward(90, -.12));
+//    	addSequential(new MoveForward(30, -.35));
     	addSequential(new RotateUntilTarget());
     	addParallel(new ShooterCommand(true));
     	addSequential(new AlignToTarget());

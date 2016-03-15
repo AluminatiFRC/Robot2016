@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class LifterMove extends Command {
-	private static final double SPEED = 1.0;
+	private static final double SPEED = .3;
 	private boolean up;
 	/**
 	 * 
@@ -30,15 +30,15 @@ public class LifterMove extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if (up){
-    		Robot.lifter.adjust(SPEED);
-    	} else {
     		Robot.lifter.adjust(-SPEED);
+    	} else {
+    		Robot.lifter.adjust(SPEED);
     	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true

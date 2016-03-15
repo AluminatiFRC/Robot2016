@@ -10,6 +10,8 @@ import org.usfirst.frc.team5495.robot.commands.AutomaticLoad;
 import org.usfirst.frc.team5495.robot.commands.CancelCommand;
 import org.usfirst.frc.team5495.robot.commands.CrawlMode;
 import org.usfirst.frc.team5495.robot.commands.LoaderCommand;
+import org.usfirst.frc.team5495.robot.commands.MoveBackward;
+import org.usfirst.frc.team5495.robot.commands.MoveForward;
 import org.usfirst.frc.team5495.robot.commands.ShooterCommand;
 
 /**
@@ -78,5 +80,8 @@ public class OperatorInterface {
 		crawlEnable.whenPressed(new CrawlMode(true));
 		Button crawlDisable = new JoystickButton(driver, 11);
 		crawlDisable.whenPressed(new CrawlMode(false));		
+		
+		Button scootBack = new JoystickButton(driver, 4);
+		scootBack .whenPressed(new MoveBackward(.4, 0));
 	}
 }

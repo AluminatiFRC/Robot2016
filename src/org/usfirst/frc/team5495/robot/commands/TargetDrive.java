@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TargetDrive extends Command {
 	private static final double TOLERANCE = 10;
 	private Double distance;
+	
+	private static final double MAX_DISTANCE = 185;
+	private static final double MIN_DISTANCE = 170;
 
 	public TargetDrive() {
         requires(Robot.drive);
@@ -26,7 +29,7 @@ public class TargetDrive extends Command {
     protected void execute() {
     	JSONObject obj = Robot.messageClient.getJsonObject("robot/vision/telemetry");
 
-    	boolean hasTarget = (Boolean)obj.get("hasTarget");
+    	boolean hasTarget = (Boolean)obj.getOrDefault("hasTarget",false);
     	if (!hasTarget){
     		Robot.drive.drive(0, 0);
     		return;
@@ -34,11 +37,17 @@ public class TargetDrive extends Command {
 
     	distance = ((Double) obj.get("targetDistance"));
     	
+    	if (distance > 9999){
+    		Robot.drive.drive(0, 0);
+    		System.out.println("Insanely huge distance");
+    		return;
+    	}
+    	
     	double movement = 0;
     	
-    	if (distance > Robot.messageClient.getProperty("target/distance/max")){
+    	if (distance > MAX_DISTANCE){
     		movement = 1.0;
-    	} else if (distance < Robot.messageClient.getProperty("target/distance/min")) {
+    	} else if (distance < MIN_DISTANCE) {
     		movement = -1.0;
     	}
     	
@@ -54,8 +63,9 @@ public class TargetDrive extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (distance <= Robot.messageClient.getProperty("target/distance/max")) &&
-        		(distance >= Robot.messageClient.getProperty("target/distance/min"));
+    	System.out.println("TargetDrive distance:" + distance);
+        return (distance <= MAX_DISTANCE) &&
+        		(distance >= MIN_DISTANCE);
     }
 
     // Called once after isFinished returns true

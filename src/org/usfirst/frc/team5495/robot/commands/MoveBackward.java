@@ -5,13 +5,13 @@ import org.usfirst.frc.team5495.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Like Moveforward but, uhh... the other way.
  */
-public class MoveForward extends Command {
+public class MoveBackward extends Command {
 	public double distanceInches;
 	private double turnAmount;
 	
-    public MoveForward(double distanceInches, double turnAmount) {
+    public MoveBackward(double distanceInches, double turnAmount) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
@@ -26,14 +26,14 @@ public class MoveForward extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("Moving forward...");
-    	Robot.drive.drive(-.65, turnAmount);
+    	System.out.println("Moving backward...");
+    	Robot.drive.drive(.65, turnAmount);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	System.out.println("" + Robot.drive.leftDistance());
-        if (Robot.drive.leftDistance() <= -distanceInches) {
+        if (Robot.drive.leftDistance() >= distanceInches){
         	return true;
         } else {
         	return false;

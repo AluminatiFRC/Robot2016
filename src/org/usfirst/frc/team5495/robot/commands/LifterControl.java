@@ -22,7 +22,7 @@ public class LifterControl extends Command {
     	double motion = Robot.oi.operator.getRawAxis(1);
     	motion = Math.pow(motion,  3);
 //    	Robot.lifter.adjustPosition(motion * 20);
-    	Robot.lifter.adjust(motion);
+    	Robot.lifter.adjust(motion * .3);
     }
 
     // Make this return true when this Command no longer needs to run execute()

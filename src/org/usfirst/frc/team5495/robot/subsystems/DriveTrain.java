@@ -89,7 +89,7 @@ public class DriveTrain extends Subsystem {
 
 	public void drive(double moveValue, double rotateValue) {
 		if (isCrawlEnabled) {
-			double crawlScaling = Robot.messageClient.getProperty("drive/crawl/speed");
+			double crawlScaling = Robot.messageClient.getProperty("drive/crawl/speed",.5);
 			moveValue *= crawlScaling;
 			rotateValue *= crawlScaling;
 		}
