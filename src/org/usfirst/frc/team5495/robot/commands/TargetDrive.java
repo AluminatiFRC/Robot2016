@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TargetDrive extends Command {
 	private static final double TOLERANCE = 10;
 	private Double distance;
-	
-	private static final double MAX_DISTANCE = 185;
+
 	private static final double MIN_DISTANCE = 170;
+	private static final double MAX_DISTANCE = 185;
 
 	public TargetDrive() {
         requires(Robot.drive);

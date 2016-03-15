@@ -25,9 +25,9 @@ public class Shooter extends Subsystem {
 	public Shooter() {
 		 motorR = new CANTalon(SHOOTER_PORT_R);
 		 motorL = new CANTalon(SHOOTER_PORT_L);
-		 motorRPID = new PIDController(.3, 0, 0, new MotorFeedback(motorR), motorR);
+		 motorRPID = new PIDController(.7, 0, 0, new MotorFeedback(motorR), motorR);
 		 motorRPID.enable();
-		 motorLPID = new PIDController(.3, 0, 0, new MotorFeedback(motorL), motorL);
+		 motorLPID = new PIDController(.7, 0, 0, new MotorFeedback(motorL), motorL);
 		 motorLPID.enable();
 		 //motorR.changeControlMode(TalonControlMode.Voltage);
 	}

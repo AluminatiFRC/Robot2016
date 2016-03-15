@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TeleOpDrive extends Command {
-	double TWISTFACTOR = 0.4;
+	double TWISTFACTOR = 0.50;
 	
     public TeleOpDrive() {
     	requires(Robot.drive);
